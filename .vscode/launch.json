@@ -14,10 +14,10 @@
             },
             "pipeTransport": {
                 "pipeCwd": "${workspaceFolder}",
-                "pipeProgram": "pwsh.exe",
+                "pipeProgram": "pwsh",
                 "pipeArgs": [
                     "-c",
-                    "docker exec -i cmongodb_web_1"
+                    "docker exec -i razorpage_web"
                 ],
                 "debuggerPath": "/vsdbg/vsdbg"
             }
@@ -33,11 +33,30 @@
             },
             "pipeTransport": {
                 "pipeCwd": "${workspaceFolder}",
-                "pipeProgram": "pwsh.exe",
+                "pipeProgram": "pwsh",
                 "pipeArgs": [
                     "-c",
-                    "docker exec -i cmongodb_web_1"
+                    "docker exec -i razorpage_web"
                 ],
+                "debuggerPath": "/vsdbg/vsdbg"
+            }
+        },
+        {
+            "name": "Mac .NET Core Attach (web)",
+            "type": "coreclr",
+            "request": "attach",
+            "processName": "dotnet",
+            "sourceFileMap": {
+                "/app": "${workspaceRoot}"
+            },
+            "pipeTransport": {
+                "pipeCwd": "${workspaceFolder}",
+                "pipeProgram": "pwsh",
+                "pipeArgs": [
+                    "-c",
+                    "docker exec -i razorpage_web"
+                ],
+                "quoteArgs": true,
                 "debuggerPath": "/vsdbg/vsdbg"
             }
         }
