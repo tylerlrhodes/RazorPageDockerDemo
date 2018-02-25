@@ -1,0 +1,11 @@
+@page
+@using c_mongodb.Pages
+@model IndexModel
+
+<h1>Hello World!</h1>
+<h2>The time on the server is @DateTime.Now</h2>
+
+@foreach (var name in Model.Names)
+{
+    <b>@name</b>
+}

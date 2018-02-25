@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "down",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "down"
+            ]
+        },
+        {
+            "label": "build",
+            "command": "docker-compose",
+            "type": "process",
+            "dependsOn": "down",
+            "args": [
+                "build"
+            ]
+        },
+        {
+            "label": "up",
+            "command": "docker-compose",
+            "type": "process",
+            "dependsOn": "build",
+            "args": [
+                "up",
+                "-d"
+            ]
+        }
+    ]
+}
