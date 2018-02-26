@@ -7,6 +7,6 @@
 
 @foreach (var time in Model.Times)
 {
-    <b>@time.time</b> <br />
+    <b>@time.time.ToLocalTime().ToString()</b> <br />
 }
 
