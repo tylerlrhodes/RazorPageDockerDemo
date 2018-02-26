@@ -9,10 +9,17 @@ using System.Collections.Generic;
 
 namespace c_mongodb.Pages
 {
+    public class Test
+    {
+        public ObjectId Id { get; set; }
+        public DateTime time {get; set;}
+        
+    }
+
     public class IndexModel : PageModel
     {
         private readonly MongoClient client;
-        public IList<string> Names {get; private set; }
+        public IList<Test> Times {get; private set; }
 
         public IndexModel()
         {
@@ -20,32 +27,19 @@ namespace c_mongodb.Pages
 
             var database = client.GetDatabase("foo");
 
-            var collection = database.GetCollection<BsonDocument>("bar");
+            var collection = database.GetCollection<Test>("Test");
 
-            var document = new BsonDocument
-            {
-                { "name", "Tyler" }
-            };
-
-            collection.InsertOne(document);
+            collection.InsertMany( new List<Test> {
+                new Test { time = DateTime.Now }
+            });
         }
 
         public async Task OnGetAsync()
         {
-            var documents = await client.GetDatabase("foo")
-                .GetCollection<BsonDocument>("bar")
+            Times = await client.GetDatabase("foo")
+                .GetCollection<Test>("Test")
                 .Find(new BsonDocument())
-                .ToListAsync();
-            
-            Names = new List<string>();
-
-            if (documents != null)
-            {
-                foreach(var name in documents)
-                {
-                    Names.Add(name["name"].AsString);
-                }
-            }
+                .ToListAsync();            
         }
     }
 }

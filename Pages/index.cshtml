@@ -5,8 +5,8 @@
 <h1>Hello World!</h1>
 <h2>The time on the server is @DateTime.Now</h2>
 
-@foreach (var name in Model.Names)
+@foreach (var time in Model.Times)
 {
-    <b>@name</b>
+    <b>@time.time</b> <br />
 }
 
