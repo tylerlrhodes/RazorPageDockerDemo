@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using StackExchange.Redis;
 
 namespace c_mongodb.Pages
 {
@@ -19,10 +20,13 @@ namespace c_mongodb.Pages
     public class IndexModel : PageModel
     {
         private readonly MongoClient client;
+        private readonly ConnectionMultiplexer multiplexer;
         public IList<Test> Times {get; private set; }
-
-        public IndexModel()
+        public int Hits {get; private set;}
+        public IndexModel(ConnectionMultiplexer mult)
         {
+            multiplexer = mult;
+
             client = new MongoClient("mongodb://mongodb:27017");
 
             var database = client.GetDatabase("foo");
@@ -39,7 +43,11 @@ namespace c_mongodb.Pages
             Times = await client.GetDatabase("foo")
                 .GetCollection<Test>("Test")
                 .Find(new BsonDocument())
-                .ToListAsync();            
+                .ToListAsync();
+
+            IDatabase db = multiplexer.GetDatabase();
+
+            Hits = (int)db.StringGet("hits");            
         }
     }
 }

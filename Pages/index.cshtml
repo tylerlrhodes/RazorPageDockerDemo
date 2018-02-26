@@ -5,6 +5,8 @@
 <h1>Hello World!</h1>
 <h2>The time on the server is @DateTime.Now</h2>
 
+<h3>Hits: @Model.Hits</h3>
+
 @foreach (var time in Model.Times)
 {
     <b>@time.time.ToLocalTime().ToString()</b> <br />

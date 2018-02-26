@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace c_mongodb
 {
@@ -22,6 +23,10 @@ namespace c_mongodb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            ConnectionMultiplexer multiplexer = ConnectionMultiplexer.Connect("redis");
+
+            services.AddSingleton<ConnectionMultiplexer>(multiplexer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +42,8 @@ namespace c_mongodb
             }
 
             app.UseStaticFiles();
+            
+            app.UseMiddleware<HitCountMiddleware>();
 
             app.UseMvc();
         }
