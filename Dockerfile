@@ -5,7 +5,7 @@ COPY *.csproj ./
 RUN dotnet restore
 
 COPY . ./
-RUN dotnet publish -c Debug -o out
+RUN dotnet publish -c Release -o out
 
 FROM microsoft/aspnetcore
 

@@ -9,6 +9,7 @@ namespace c_mongodb
     public class HitCountMiddleware
     {
         private readonly RequestDelegate _next;
+        private object _lockRedis = new object();
 
         public HitCountMiddleware(RequestDelegate next)
         {
@@ -19,11 +20,14 @@ namespace c_mongodb
         {
             IDatabase db = multiplexer.GetDatabase();
 
-            int count = (int)db.StringGet("hits");
+            lock(_lockRedis)
+            {
+                int count = (int)db.Wait(db.StringGetAsync("hits"));
 
-            count++;
+                count++;
 
-            db.StringSet("hits", count);
+                db.StringSet("hits", count);
+            }
             
             await _next(httpContext);
         }

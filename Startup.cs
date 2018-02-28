@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
@@ -27,6 +28,10 @@ namespace c_mongodb
             ConnectionMultiplexer multiplexer = ConnectionMultiplexer.Connect("redis");
 
             services.AddSingleton<ConnectionMultiplexer>(multiplexer);
+
+            services.AddResponseCompression(opts => {
+                opts.Providers.Add<GzipCompressionProvider>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +45,8 @@ namespace c_mongodb
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            app.UseResponseCompression();
 
             app.UseStaticFiles();
             

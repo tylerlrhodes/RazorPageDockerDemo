@@ -47,7 +47,7 @@ namespace c_mongodb.Pages
 
             IDatabase db = multiplexer.GetDatabase();
 
-            Hits = (int)db.StringGet("hits");            
+            Hits = (int)db.Wait(db.StringGetAsync("hits"));            
         }
     }
 }
