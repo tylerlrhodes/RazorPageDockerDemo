@@ -7,8 +7,8 @@ services:
     container_name: razorpage_web
   mongodb:
     image: "mongo"
-    #volumes:
-    #  - datavolume:/data/db
+    volumes:
+      - datavolume:/data/db
   redis:
     image: "redis"
 

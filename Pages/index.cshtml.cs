@@ -14,7 +14,6 @@ namespace c_mongodb.Pages
     {
         public ObjectId Id { get; set; }
         public DateTime time {get; set;}
-        
     }
 
     public class IndexModel : PageModel
@@ -23,6 +22,7 @@ namespace c_mongodb.Pages
         private readonly ConnectionMultiplexer multiplexer;
         public IList<Test> Times {get; private set; }
         public int Hits {get; private set;}
+
         public IndexModel(ConnectionMultiplexer mult)
         {
             multiplexer = mult;
