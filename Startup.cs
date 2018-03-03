@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+
 using StackExchange.Redis;
 
 namespace c_mongodb
@@ -32,6 +34,8 @@ namespace c_mongodb
             services.AddResponseCompression(opts => {
                 opts.Providers.Add<GzipCompressionProvider>();
             });
+
+            services.AddDbContext<SimpleContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

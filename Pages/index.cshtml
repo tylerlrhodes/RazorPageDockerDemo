@@ -7,6 +7,11 @@
 
 <h3>Hits: @Model.Hits</h3>
 
+@foreach (var person in Model.People)
+{
+    @person.Name <br />
+}
+
 @foreach (var time in Model.Times)
 {
     <b>@time.time.ToLocalTime().ToString()</b> <br />

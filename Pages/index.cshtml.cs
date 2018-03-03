@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using StackExchange.Redis;
+using Microsoft.EntityFrameworkCore;
 
 namespace c_mongodb.Pages
 {
@@ -20,11 +21,15 @@ namespace c_mongodb.Pages
     {
         private readonly MongoClient client;
         private readonly ConnectionMultiplexer multiplexer;
+        private readonly SimpleContext _context;
         public IList<Test> Times {get; private set; }
+        public IList<Person> People {get; private set; }
         public int Hits {get; private set;}
 
-        public IndexModel(ConnectionMultiplexer mult)
+        public IndexModel(ConnectionMultiplexer mult, SimpleContext sc)
         {
+            _context = sc;
+
             multiplexer = mult;
 
             client = new MongoClient("mongodb://mongodb:27017");
@@ -47,7 +52,17 @@ namespace c_mongodb.Pages
 
             IDatabase db = multiplexer.GetDatabase();
 
-            Hits = (int)db.Wait(db.StringGetAsync("hits"));            
+            Hits = (int)db.Wait(db.StringGetAsync("hits"));  
+
+            Person p = new Person {
+                Name = $"person + {DateTime.Now.ToFileTime()}"
+            };
+            
+            _context.People.Add(p);
+
+            await _context.SaveChangesAsync();
+
+            People = await _context.People.ToListAsync();
         }
     }
 }

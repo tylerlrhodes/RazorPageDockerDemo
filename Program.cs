@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace c_mongodb
@@ -14,7 +15,16 @@ namespace c_mongodb
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+            
+            using (var scope = host.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<SimpleContext>();
+
+                context.Database.EnsureCreated();
+            }
+            
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
